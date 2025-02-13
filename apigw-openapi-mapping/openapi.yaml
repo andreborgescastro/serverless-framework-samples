@@ -1,0 +1,256 @@
+info:
+  title: Platform API
+  version: 0.0.1
+openapi: "3.0.1"
+
+paths:
+  /v1/myResource/{id}/status:
+    get:
+      # security:
+      #   - CognitoAuthorizer: []
+      description: Get status for my resource.
+      parameters:
+        - description: The ID my resource.
+          in: path
+          name: id
+          required: true
+          schema:
+            description: The ID my resource.
+            title: Tid
+            type: string
+      x-amazon-apigateway-integration:
+        type: "mock"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        responses:
+          default:
+            statusCode: "200"
+            responseTemplates:
+              application/json: '{"message": "Mock response for GET /v1/myResource/{id}/status. Custom message ${custom.my_data}"}'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      summary: Get my resource Status
+    options:
+      summary: CORS support
+      description: |
+        Enable CORS by returning correct headers
+      tags:
+        - CORS
+      responses:
+        200:
+          description: Default response for CORS method
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+      x-amazon-apigateway-integration:
+        type: mock
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /v1/myResource:
+    post:
+      description: My Resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Empty"
+        required: true
+      x-amazon-apigateway-integration:
+        type: "mock"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        responses:
+          default:
+            statusCode: "200"
+            responseTemplates:
+              application/json: '{"message": "Mock response for POST /v1/myResource"}'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+          headers:
+            Access-Control-Allow-Headers:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Credentials:
+              type: string
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Error Response
+          headers:
+            Access-Control-Allow-Headers:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+          description: Validation Error
+      summary: Create my resource
+    options:
+      summary: CORS support
+      description: |
+        Enable CORS by returning correct headers
+      tags:
+        - CORS
+      responses:
+        200:
+          description: Default response for CORS method
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+      x-amazon-apigateway-integration:
+        type: mock
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+  /v1/myResource/sample:
+    post:
+      description: "Create a sample of my resource."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MyResource"
+        required: true
+      x-amazon-apigateway-integration:
+        type: "mock"
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        responses:
+          default:
+            statusCode: "200"
+            responseTemplates:
+              application/json: '{"message": "Mock response for POST /v1/myResource/sample"}'
+      tags:
+        - sample
+    options:
+      summary: CORS support
+      description: |
+        Enable CORS by returning correct headers
+      tags:
+        - CORS
+      responses:
+        200:
+          description: Default response for CORS method
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+      x-amazon-apigateway-integration:
+        type: mock
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+components:
+  # securitySchemes:
+  #   CognitoAuthorizer:
+  #     type: "apiKey"
+  #     name: "Authorization"
+  #     in: header
+  #     x-amazon-apigateway-authtype: "custom"
+  #     x-amazon-apigateway-authorizer:
+  #       type: request
+  #       authorizerUri: "${authorizer_uri}"
+  #       identitySource: method.request.header.Authorization
+  #       authorizerResultTtlInSeconds: "0"
+  schemas:
+    Empty:
+      title: "Empty Schema"
+      type: "object"
+    myResource:
+      description: Esquema para criação de myResource.
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nome do recurso.
+        description:
+          type: string
+          description: Descrição do recurso.
+      required:
+        - name
+    MyResource:
+      description: Esquema para criação de sample de myResource.
+      type: object
+      properties:
+        sampleName:
+          type: string
+          description: Nome da amostra.
+        sampleValue:
+          type: string
+          description: Valor da amostra.
+      required:
+        - sampleName

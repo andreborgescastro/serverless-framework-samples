@@ -1,0 +1,8 @@
+# Serverless
+.serverless/
+
+#Node-Modules
+node_modules
+
+#env
+.env
